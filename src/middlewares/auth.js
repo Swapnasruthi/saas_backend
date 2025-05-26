@@ -5,7 +5,6 @@ const User = require("../models/User");
 const UserAuth = async (req, res, next) => {
          try{
                 const {token} = req.cookies;
-                
                 //check if token is present
                 if(!token){
                     return res.status(401).send("unAuthorized");
@@ -14,9 +13,10 @@ const UserAuth = async (req, res, next) => {
                 //decoding the token to get the user id
 
                 const decodedId = await jwt.verify(token, process.env.JWT_SECRET);
+                console.log(decodedId);
                 
-                const {id} = decodedId;
-                const user = await User.findById(id);
+                const {_id} = decodedId;
+                const user = await User.findById(decodedId._id);
 
 
                 //verifying the user

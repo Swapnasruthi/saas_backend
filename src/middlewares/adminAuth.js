@@ -4,8 +4,8 @@ const Admin = require('../models/Admin');
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const adminAuth = async (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-
+  // const token = req.header('Authorization')?.replace('Bearer ', '');
+  const {token} = req.cookies;
   if (!token) {
     return res.status(401).json({ message: 'No token provided', success: false });
   }
@@ -13,6 +13,12 @@ const adminAuth = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     
+    const {_id} = decoded;
+    //console.log(decoded);
+    // const isAdmin = await Admin.findById(_id);
+    // if (!isAdmin) {
+    //   return res.status(403).json({ message: 'Access denied: Not an admin', success: false });
+    // }
     // Ensure it's an admin token
     if (!decoded.isAdmin) {
       return res.status(403).json({ message: 'Access denied: Not an admin', success: false });

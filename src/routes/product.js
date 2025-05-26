@@ -11,9 +11,10 @@ const Product = require('../models/Product');
 const Plan = require("../models/Plan");
 require("dotenv").config();
 
+router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 router.use(cookieParser());
-router.use(express.json());
+
 
 
 router.post('/products', adminAuth, async (req, res) => {
@@ -77,7 +78,9 @@ router.get('/products/:id', async (req, res) => {
 //updating product by id
 router.put('/products/:id', adminAuth, async (req, res) => {
     try{
-        const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const product = await Product.findById(req.params.id);
+        Object.keys(req.body).forEach((key) => (product[key] = req.body[key]));
+
          res.status(200).json({
             success:true,
             data:product,
@@ -116,13 +119,18 @@ router.delete('/products/:id', adminAuth, async (req, res) => {
 router.post('/plans', adminAuth, async (req, res) => {
     try{
         const plan = new Plan(req.body);
+        console.log(req.body);
+        if (!["Basic", "Advanced", "Premium"].includes(req.body.name)) {
+            return res.status(400).json({ message: "Invalid plan name" });
+        }
         await plan.save();
         res.status(201).json(plan);
 
     }catch(err){
+        console.log("error while adding the plans",err);
          res.status(500).json({
             success:false,
-            message:"falied at adding the plan"
+            message:"falied at adding the plan"+err.name
         })
     }
   

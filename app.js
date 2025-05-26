@@ -25,8 +25,6 @@ const authRouter = require('./src/routes/auth');
 const adminRouter = require('./src/routes/admin');
 const productRouter = require('./src/routes/product');
 const userRouter = require('./src/routes/user');
-// const subscriptionRouter = require('./src/routes/subscription');
-
 
 
 

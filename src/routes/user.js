@@ -10,7 +10,7 @@ const Transaction = require('../models/Transaction');
 router.get('/profile', UserAuth, async (req, res) => {
 
     try{
-         const user = await User.findById(req.user.id).select('-password');
+         const user = await User.findById(req.User.id).select('-password');
         res.json(user);
 
     }catch(err){
@@ -24,9 +24,9 @@ router.get('/profile', UserAuth, async (req, res) => {
 
 
 //fetching subscriptions.
-router.get('subscriptions', UserAuth, async (req, res) => {
+router.get('/subscriptions', UserAuth, async (req, res) => {
     try{
-        const subscriptions = await Subscription.find({ userId: req.user.id });
+        const subscriptions = await Subscription.find({ userId: req.User.id });
         res.json(subscriptions);
 
     }catch(err){
@@ -42,7 +42,7 @@ router.get('subscriptions', UserAuth, async (req, res) => {
 router.get('/invoices', UserAuth, async (req, res) => {
 
     try{
-         const transactions = await Transaction.find({ userId: req.user.id });
+         const transactions = await Transaction.find({ userId: req.User.id });
         res.json(transactions);
 
     }catch(err){
