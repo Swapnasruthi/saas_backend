@@ -10,7 +10,7 @@ router.get('/users', adminAuth, async (req, res) => {
          const users = await User.find();
          res.json(users);
     }catch(err){
-        res.status(501).json({
+        res.status(500).json({
             success:false,
             message:"falied to fetch all the users"
         })
@@ -28,7 +28,7 @@ router.get('/user/:id', adminAuth, async (req, res) => {
         res.json({ user, subscriptions });
 
     }catch(err){
-         res.status(501).json({
+         res.status(500).json({
             success:false,
             message:"falied to user details + purchases"
         })
@@ -46,7 +46,7 @@ router.put('/user/:id/ban', adminAuth, async (req, res) => {
         res.json(user);
 
     }catch(err){
-        res.status(501).json({
+        res.status(500).json({
             success:false,
             message:"falied to ban user"
         })
@@ -60,7 +60,7 @@ router.get('/subscriptions', adminAuth, async (req, res) => {
           res.json(subs);
 
     }catch(err){
-        res.status(501).json({
+        res.status(500).json({
             success:false,
             message:"falied to fetch subscriptions"
         })
@@ -73,7 +73,7 @@ router.get('/transactions', adminAuth, async (req, res) => {
          const txns = await Transaction.find();
         res.json(txns);
     }catch(err){
-            res.status(501).json({
+            res.status(500).json({
             success:false,
             message:"falied to fetch Transactions"
         })
@@ -91,7 +91,7 @@ router.get('/transactions', adminAuth, async (req, res) => {
 //         res.json({ exported: users.length });
 
 //     }catch(err){
-//          res.status(501).json({
+//          res.status(500).json({
 //             success:false,
 //             message:"falied to export users to csv"
 //         })
@@ -108,7 +108,7 @@ router.get('/transactions', adminAuth, async (req, res) => {
 //         res.json({ exported: txns.length });
 
 //     }catch(err){
-//              res.status(501).json({
+//              res.status(500).json({
 //              success:false,
 //              message:"falied to export payments to csv"
 //         })

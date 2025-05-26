@@ -14,7 +14,7 @@ router.get('/profile', UserAuth, async (req, res) => {
         res.json(user);
 
     }catch(err){
-        res.status(501).json({
+        res.status(500).json({
             success:"false",
             message:"failed to fetch the user profile"
         })
@@ -30,7 +30,7 @@ router.get('/subscriptions', UserAuth, async (req, res) => {
         res.json(subscriptions);
 
     }catch(err){
-         res.status(501).json({
+         res.status(500).json({
             success:"false",
             message:"failed to fetch the subscriptions"
         })
@@ -46,7 +46,7 @@ router.get('/invoices', UserAuth, async (req, res) => {
         res.json(transactions);
 
     }catch(err){
-        res.status(501).json({
+        res.status(500).json({
             success:"false",
             message:"failed to fetch the invoices"
         })

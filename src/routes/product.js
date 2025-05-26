@@ -19,7 +19,18 @@ router.use(cookieParser());
 
 router.post('/products', adminAuth, async (req, res) => {
     try{
+          const { name, price, category } = req.body;
+
+            if (!name || !price || !category) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Product name, price, and category are required",
+                });
+            }
           const product = new Product(req.body);
+            if (!["Basic", "Advanced", "Premium"].includes(req.body.category)) {
+                return res.status(400).json({ message: "Invalid product category" });
+            }
             await product.save();
             res.status(201).json({
                 success:true,
@@ -80,7 +91,7 @@ router.put('/products/:id', adminAuth, async (req, res) => {
     try{
         const product = await Product.findById(req.params.id);
         Object.keys(req.body).forEach((key) => (product[key] = req.body[key]));
-
+        await product.save();
          res.status(200).json({
             success:true,
             data:product,
@@ -100,6 +111,7 @@ router.delete('/products/:id', adminAuth, async (req, res) => {
 
     try{
         await Product.findByIdAndDelete(req.params.id);
+        
         res.status(201).json({
             success:true,
             message:"Deleted!"
@@ -123,6 +135,12 @@ router.post('/plans', adminAuth, async (req, res) => {
         if (!["Basic", "Advanced", "Premium"].includes(req.body.name)) {
             return res.status(400).json({ message: "Invalid plan name" });
         }
+         // 2. Check for duplicate plan name
+        const existingPlan = await Plan.findOne(req.body.name);
+        if (existingPlan) {
+            return res.status(409).json({ success: false, message: "Plan with this name already exists" });
+        }
+
         await plan.save();
         res.status(201).json(plan);
 

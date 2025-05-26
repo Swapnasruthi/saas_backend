@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const validator = require("validator");
 const cookieParser = require("cookie-parser");
 const {UserAuth} = require("../middlewares/auth");
 const Admin = require('../models/Admin');
@@ -17,7 +18,32 @@ router.post("/signup", async (req, res) => {
         try{
 
             const {fullName, email, password} = req.body;
+
+             if (!fullName || !email || !password) {
+                return res.status(400).json({
+                    success: false,
+                    message: "All fields are required",
+                });
+            }
             
+            
+            // Email format validation
+            if (!validator.isEmail(email)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid email format",
+                });
+            }
+
+             const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+            if (!passwordRegex.test(password)) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Password must be at least 6 characters long and contain at least one letter and one number and without special characters",
+                });
+            }
+
             let user = await User.findOne({ email:email});
             if(user){
                 return res.status(400).json({
