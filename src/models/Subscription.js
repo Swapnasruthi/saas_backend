@@ -11,13 +11,12 @@ const SubscriptionSchema = new mongoose.Schema({
   productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
-    required: true,
   },
   planId: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: "Plan", 
     required: true },
-  purchaseDate: { type: Date, required: true },
+  purchaseDate: { type: Date },
   expiryDate: Date,
   status: { type: String, enum: ["Active", "Expired"], default: "Active" },
   amountPaid: Number,

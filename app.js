@@ -25,7 +25,7 @@ const authRouter = require('./src/routes/auth');
 const adminRouter = require('./src/routes/admin');
 const productRouter = require('./src/routes/product');
 const userRouter = require('./src/routes/user');
-
+const paymentRouter = require('./src/routes/purchase');
 
 
 //using routes
@@ -34,7 +34,7 @@ app.use('/api/auth', authRouter);
 app.use("/api", productRouter);
 app.use("/api/user", userRouter);
 app.use("/api/admin", adminRouter);
-
+app.use("/api", paymentRouter);
 
 
 
